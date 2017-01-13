@@ -1,6 +1,6 @@
 #' ---
 #' title: "Cleaning up messy data"
-#' author: "Ista Zahn"
+#' author: "Ista Zahn, Daina Bouquin"
 #' output: 
 #'   html_document:
 #'     highlight: tango
@@ -16,37 +16,35 @@
 #' Workshop description
 #' --------------------
 #' 
-#' Statistics courses usually use clean and well-behaved data for examples and
-#' homework. This leaves many students unprepared for the messiness and chaos of
-#' data in the real world. This workshop aims to prepare you for dealing with messy
-#' data by walking you through real-life example.
+#' Data scientists are known and celebrated for modeling and visually
+#' displaying information, but down in the data science engine room there
+#' is a lot of less glamorous work to be done. Before data can be used
+#' effectively it must often be cleaned, corrected, and reformatted. This
+#' workshop introduces the basic tools needed to make your data behave,
+#' including data reshaping, regular expressions and other text
+#' manipulation tools.
 #' 
-#' This is an intermediate/advanced R course appropriate for those with basic
-#' knowledge of R.
+#' Prerequisites and Preparation
+#' -----------------------------
 #' 
-#' This workshop uses
-#' the [tidyverse](https://cran.r-project.org/web/packages/tidyverse/index.html)
-#' package which provides more consistent file IO
-#' ([readr](https://cran.r-project.org/web/packages/readr/index.html)
-#' and [readxl](https://cran.r-project.org/web/packages/readxl/index.html)), string
-#' manipulation
-#' ([stringr](https://cran.r-project.org/web/packages/dplyr/index.html), and
-#' functional programming
-#' ([purrr](https://cran.r-project.org/web/packages/purrr/index.html)) tools for R.
+#' Prior to the workshop you should:
 #' 
-#' Materials and setup
-#' -------------------
+#' - install R from <https://cran.r-project.org/>
+#' - install RStudio from <https://www.rstudio.com/products/rstudio/download/#download>
+#' - install the tidyverse package in R with `install.packages("tidyverse")`
+#' - download and extract the workshop materials from 
+#'   <https://github.com/izahn/R-data-cleaning/archive/messy_data_v1.zip>
 #' 
-#' Everyone should have R installed -- if not:
+#' The lesson notes are included in the download link above. You can also
+#' view the lesson notes at
+#' <https://rawgit.com/izahn/R-data-cleaning/master/dataCleaning.html>
 #' 
-#' -   Open a web browser and go to <http://cran.r-project.org> and download and
-#'     install it
-#' -   Also helpful to install RStudio (download from <http://rstudio.com>)
-#' -   Open R and install the =tidyverse= package
+#' A github repository containing the workshop materials is
+#' available <https://github.com/izahn/R-data-cleaning>.
 #' 
-## ------------------------------------------------------------------------
-## install.packages("tidyverse")
-
+#' This is an intermediate/advanced R course appropriate for those with
+#' basic knowledge of R. If you need a refresher we recommend the
+#' [Software Carpentry Introductory R material](https://swcarpentry.github.io/r-novice-gapminder/01-rstudio-intro/).
 #' 
 #' Example project overview
 #' ------------------------
