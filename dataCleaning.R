@@ -63,13 +63,13 @@
 #' to extract and graph the top 100 boys names in England and Wales for every year
 #' since 1996. There are several things that make this challenging:
 #' 
-#' 1. The worksheet containing the data of interest is in different positions and.
-#' has different names from one year to the next. However, it always includes
-#' "Table 1" in the worksheet name.
+#' 1. The worksheet containing the data of interest is in different
+#'    positions and has different names from one year to the next. However,
+#'    it always includes "Table 1" in the worksheet name.
 #' 2. The data does not start on row one. Headers are on row 7, followed by a blank
 #'    line, followed by the actual data.
-#' 3. The data is stored in an inconvenient way, with ranks 1-50 in the first set.
-#' of columns and ranks 51-100 in a separate set of columns.
+#' 3. The data is stored in an inconvenient way, with ranks 1-50 in the first set
+#'    of columns and ranks 51-100 in a separate set of columns.
 #' 4. Some years include columns for "changes in rank", others do not.
 #' 5. There are notes below the data.
 #' 
@@ -107,24 +107,19 @@ map(boy.file.names, excel_sheets)
 #' ===========================================================
 #' 
 #' In order extract the correct worksheet names we will use functions for
-#' manipulating strings. Base R provides some string manipulation capabilities (see
-#' `?regex`, `?sub` and `?grep`), but I recommend either
-#' the [stringr](https://cran.r-project.org/web/packages/stringr/index.html)
-#' or [stringi](https://cran.r-project.org/web/packages/stringi/index.html)
-#' packages. The *stringr* package is more user-friendly, and the *stringi* package
-#' is more powerful and complex. Let's use the friendlier one. While we're
-#' attaching packages we'll also attach
-#' the [readxl](https://cran.r-project.org/web/packages/readxl/index.html) package
-#' and
-#' the [tidyverse](https://cran.r-project.org/web/packages/tidyverse/index.html)
-#' package which provides more modern versions of many basic functions in R.
+#' manipulating strings. Base R provides some string manipulation
+#' capabilities (see `?regex`, `?sub` and `?grep`), but we will use the
+#' *stringr* package because it is more user-friendly.
 #' 
-#' The *stringr* package provides functions to detect, locate, extract, match,
-#' replace, and split strings (among other things). Here we want to detect the
-#' pattern "Table 1", and only return elements with this pattern. We can do that
-#' using the `str_subset` function. The first argument to `str_subset` is character
-#' vector we want to search in. The second argument is a *regular expression*
-#' matching the pattern we want to retain.
+#' The *stringr* package provides functions to *detect*, *locate*,
+#' *extract*, *match*, *replace*, *combine* and *split* strings (among
+#' other things). 
+#' 
+#' Here we want to detect the pattern "Table 1", and only
+#' return elements with this pattern. We can do that using the
+#' `str_subset` function. The first argument to `str_subset` is character
+#' vector we want to search in. The second argument is a *regular
+#' expression* matching the pattern we want to retain.
 #' 
 #' If you are not familiar with regular expressions, <http://www.regexr.com/> is a
 #' good place to start.
@@ -164,7 +159,7 @@ glimpse(boysNames[[1]])
 #' Data cleanup
 #' ================
 #' 
-#' Now that we've read in the data we still have some cleanup to do. Namely we need
+#' Now that we've read in the data we still have some cleanup to do. Specifically, we need
 #' to:
 #' 
 #' 1. fix column names
@@ -178,7 +173,7 @@ glimpse(boysNames[[1]])
 #' 
 #' to this:
 #' 
-#' ![messy](images/clean.png)
+#' ![tidy](images/clean.png)
 #' 
 #' There are many ways to do this kind of data manipulation in R. We're going to
 #' use the *dplyr* and *tidyr* packages to make our lives easier. Both packages
@@ -196,14 +191,14 @@ names(boysNames[[1]])
 
 #' 
 #' So we need to a) make sure each column has a name, and b) distinguish between
-#' the first and second occurances of "Name" and "Count". We could do this
+#' the first and second occurrences of "Name" and "Count". We could do this
 #' step-by-step, but there is a handy function in R called `make.names` that will
 #' do it for us.
 #' 
 ## ------------------------------------------------------------------------
 names(boysNames[[1]])
 make.names(names(boysNames[[1]]), unique = TRUE)
-names(boysNames[[1]]) <- make.names(names(boysNames[[1]]), unique = TRUE)
+setNames(boysNames[[1]], make.names(names(boysNames[[1]]), unique = TRUE))
 names(boysNames[[1]])
 
 #' 
@@ -213,8 +208,7 @@ names(boysNames[[1]])
 ## ------------------------------------------------------------------------
 boysNames <- map(boysNames,
                  function(x) {
-                   names(x) <- make.names(names(x), unique = TRUE)
-                   x
+                     setNames(x, make.names(names(x), unique = TRUE))
                  })
 
 #' 
