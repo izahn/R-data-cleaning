@@ -20,4 +20,4 @@ Prerequisites and Preparation
 Prior to the workshop you should:
 - install [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/#download)
 - install the `tidyverse` package in R with `install.packages("tidyverse")`
-- download the workshop materials from <https://github.com/izahn/R-data-cleaning/archive/v0.1.zip.
+- download the workshop materials from <https://github.com/izahn/R-data-cleaning/archive/messy_data_v1.zip>
