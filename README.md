@@ -1,12 +1,6 @@
 ---
 title: "Harvard DataFest 2017 | Cleaning up messy data"
 author: "Ista Zahn"
-output: 
-  html_document:
-    highlight: tango
-    toc: true
-    toc_float:
-      collapsed: true
 ---
 
 Workshop Description
