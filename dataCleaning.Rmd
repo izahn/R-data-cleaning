@@ -75,7 +75,7 @@ since 1996. There are several things that make this challenging:
 
 As you can see, we have a lot of work to do. Let's get started by attaching some useful R packages.
 
-```{r}
+```{r attach packages}
 library(tidyverse)
 library(stringr)
 library(readxl)
@@ -91,7 +91,7 @@ year, but always has "Table 1" in the sheet name.
 
 The first step is to get a vector of file names.
 
-```{R}
+```{r get list of data file names}
 boy.file.names <- list.files("babyNamesData/boys", full.names = TRUE)
 ```
 
@@ -99,7 +99,7 @@ Now we can iterate over the file names and get the names of each worksheet. We
 could use a `for` loop, or `sapply`, but the `map` family of functions from the *purrr*
 package gives us a more consistent alternative, so we'll use that.
 
-```{r}
+```{r iterate over file names using map}
 map(boy.file.names, excel_sheets)
 ```
 
@@ -127,7 +127,7 @@ good place to start.
 Now that we know how to filter character vectors using `str_subset` we can
 identify the correct sheets for each year.
 
-```{r}
+```{r function to identify sheet with table 1 in the name}
 findTable1 <- function(x) {
   str_subset(excel_sheets(x), "Table 1")
 }
@@ -146,7 +146,7 @@ that using the `read_excel` function.
 Recall that the actual data starts on row 7, so we want to skip the first 6
 rows.
 
-```{r}
+```{r function to read table one from excel file}
 readTable1 <- function(file) {
   read_excel(file, sheet = findTable1(file), skip = 6)
 }
@@ -186,7 +186,7 @@ letter, b) contain only letters, numbers, underscores and periods, and c)
 uniquely identify each column.
 
 The actual column names look like this:
-```{r}
+```{r examine the names from the excel sheet}
 names(boysNames[[1]])
 ```
 
@@ -195,7 +195,7 @@ the first and second occurrences of "Name" and "Count". We could do this
 step-by-step, but there is a handy function in R called `make.names` that will
 do it for us.
 
-```{r}
+```{r cleanup the names}
 names(boysNames[[1]])
 make.names(names(boysNames[[1]]), unique = TRUE)
 setNames(boysNames[[1]], make.names(names(boysNames[[1]]), unique = TRUE))
@@ -205,7 +205,7 @@ names(boysNames[[1]])
 Of course we need to iterate over each data.frame in the `boysNames` list and to
 this for each one. Fortunately the `map` function makes this easy.
 
-```{r}
+```{r use map to cleanup all the names}
 boysNames <- map(boysNames,
                  function(x) {
                      setNames(x, make.names(names(x), unique = TRUE))
@@ -219,7 +219,7 @@ Next we want to remove blank rows and rows used for notes. An easy way to do
 that is to remove rows that don't have a name. We can filter on some condition
 using the `filter` function, like this:
 
-```{r}
+```{r remove empty rows}
 boysNames[[1]]
 boysNames[[1]] <- filter(boysNames[[1]], !is.na(Name))
 boysNames[[1]]
@@ -235,7 +235,7 @@ Next we want to retain just the `Name`, `Name.1` and `Count`, `Count.1` columns.
 We can do that using the `select` function:
 
 
-```{r}
+```{r select just the columns of interest}
 boysNames[[1]]
 boysNames[[1]] <- select(boysNames[[1]], Name, Name.1, Count, Count.1)
 boysNames[[1]]
@@ -252,7 +252,7 @@ instead of in two side-by-side tables. For many similar tasks the `gather`
 function in the *tidyr* package is useful, but in this case we will be better
 off using a combination of `select` and `bind_rows`.
 
-```{r}
+```{r stack to two halves of the data}
 boysNames[[1]]
 bind_rows(select(boysNames[[1]], Name, Count),
           select(boysNames[[1]], Name = Name.1, Count = Count.1))
