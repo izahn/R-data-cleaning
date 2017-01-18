@@ -29,4 +29,4 @@ The lesson notes are available at
 
 This is an intermediate/advanced R course appropriate for those with
 basic knowledge of R. If you need a refresher we recommend the
-Software Carpentry Introductory material [here](https://swcarpentry.github.io/r-novice-gapminder/01-rstudio-intro/).
+Software Carpentry Introductory material [here](https://swcarpentry.github.io/r-novice-gapminder/01-rstudio-intro/). Additional resources on data cleaning are [here](https://github.com/izahn/R-data-cleaning/blob/master/extra_resources.md).
