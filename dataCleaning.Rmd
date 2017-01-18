@@ -293,5 +293,17 @@ Exercise: Cleanup all the data
 In the previous examples we learned how to drop empty rows with `filter`, select
 only relevant columns with `select`, and re-arrange our data with `select` and
 `bind_rows`. In each case we applied the changes only to the first element of
-our `boysNames` list. Your task now is to use the `map` function to apply each
+our `boysNames` list. 
+
+Your task now is to use the `map` function to apply each
 of these transformations to all the elements in `boysNames`.
+
+--------
+
+In the previous exercise we cleaned up the "top 100" boys names data. The Excel files
+contain addiontal sheets, one of which contains *all* the boys names. 
+
+Repeat the data cleaning process we used for the "top 100" data using the sheets 
+containing all boys names. 
+
+
