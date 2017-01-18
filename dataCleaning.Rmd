@@ -61,7 +61,10 @@ separately for boys and girls and is stored in Excel spreadsheets.
 
 I have downloaded all the excel files containing boys names data from https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesenglandandwalesbabynamesstatisticsboys. Our mission is
 to extract and graph the top 100 boys names in England and Wales for every year
-since 1996. There are several things that make this challenging:
+since 1996. There are several things that make this challenging.
+
+Problems with the data
+----------------------
 
 1. The worksheet containing the data of interest is in different
    positions and has different names from one year to the next. However,
@@ -73,21 +76,26 @@ since 1996. There are several things that make this challenging:
 4. Some years include columns for "changes in rank", others do not.
 5. There are notes below the data.
 
+Useful data manipulation packages
+---------------------------------
+
 As you can see, we have a lot of work to do. Let's get started by attaching some useful R packages.
 
 ```{r attach packages}
-library(tidyverse)
-library(stringr)
-library(readxl)
-library(purrr)
+library(tidyverse) # data.frame manipulation
+library(stringr) # string processing
+library(readxl) # read excel files
+library(purrr) # work with lists
 ```
 
-Iterating over a directory of files
+Iterating over a directory of files {.smaller}
 ================================================
 
 Our first task is to iterate over all the data files and read the appropriate
 sheet from each one. As noted above, the appropriate sheet differs from year to
 year, but always has "Table 1" in the sheet name.
+
+---------
 
 The first step is to get a vector of file names.
 
@@ -103,13 +111,15 @@ package gives us a more consistent alternative, so we'll use that.
 map(boy.file.names, excel_sheets)
 ```
 
-Filtering strings using regular expressions
+Filtering strings using regular expressions {.smaller}
 ===========================================================
 
 In order extract the correct worksheet names we will use functions for
 manipulating strings. Base R provides some string manipulation
 capabilities (see `?regex`, `?sub` and `?grep`), but we will use the
 *stringr* package because it is more user-friendly.
+
+-----------
 
 The *stringr* package provides functions to *detect*, *locate*,
 *extract*, *match*, *replace*, *combine* and *split* strings (among
@@ -123,6 +133,8 @@ expression* matching the pattern we want to retain.
 
 If you are not familiar with regular expressions, <http://www.regexr.com/> is a
 good place to start.
+
+----------------
 
 Now that we know how to filter character vectors using `str_subset` we can
 identify the correct sheets for each year.
@@ -143,6 +155,8 @@ to iterate over a vector of file names with `map`, and we know how to identify
 the correct sheet. All we need to do next is read that sheet into R. We can do
 that using the `read_excel` function.
 
+----------
+
 Recall that the actual data starts on row 7, so we want to skip the first 6
 rows.
 
@@ -159,27 +173,36 @@ glimpse(boysNames[[1]])
 Data cleanup
 ================
 
-Now that we've read in the data we still have some cleanup to do. Specifically, we need
-to:
+Now that we've read in the data we still have some cleanup to do. 
+
+-----------
+
+Specifically, we need to:
 
 1. fix column names
 2. get rid of blank row and the top and the notes at the bottom
 3. get rid of extraneous "changes in rank" columns if they exist
 4. transform the side-by-side tables layout to a single table.
 
+----------
+
 In short, we want to go from this:
 
 ![messy](images/messy.png)
+
+----------
 
 to this:
 
 ![tidy](images/clean.png)
 
+----------
+
 There are many ways to do this kind of data manipulation in R. We're going to
 use the *dplyr* and *tidyr* packages to make our lives easier. Both packages
 were attached along with the *tidyverse* package.
 
-Fixing column names
+Fixing column names {.smaller}
 -------------------------
 The column names are in bad shape. In R we need column names to a) start with a
 letter, b) contain only letters, numbers, underscores and periods, and c)
@@ -201,6 +224,10 @@ make.names(names(boysNames[[1]]), unique = TRUE)
 setNames(boysNames[[1]], make.names(names(boysNames[[1]]), unique = TRUE))
 names(boysNames[[1]])
 ```
+
+
+Fixing all the names
+--------------------
 
 Of course we need to iterate over each data.frame in the `boysNames` list and to
 this for each one. Fortunately the `map` function makes this easy.
@@ -260,6 +287,8 @@ bind_rows(select(boysNames[[1]], Name, Count),
 
 Exercise: Cleanup all the data
 =========================================
+
+--------
 
 In the previous examples we learned how to drop empty rows with `filter`, select
 only relevant columns with `select`, and re-arrange our data with `select` and
