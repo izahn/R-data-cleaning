@@ -55,3 +55,37 @@ boysNames[[1]]
 bind_rows(select(boysNames[[1]], Name, Count),
           select(boysNames[[1]], Name = Name.1, Count = Count.1))
 
+
+## ---- exercise solution -------------------------------------------------
+
+boysNames <- map(boysNames, function(x) {
+    filtered <- filter(x, !is.na(Name)) # drop rows with no Name value
+    selected <- select(filtered, Name, Count, Name.1, Count.1) # select just Name and Count columns
+    bind_rows(select(selected, Name,  Count), # re-arrange into two columns
+              select(selected, Name = Name.1, Count = Count.1))
+})
+
+## Add year column
+boysNames <- map2(boysNames,
+                  1996:2015,
+                  function(df, year) {
+                      mutate(df, Year = year)
+                  })
+
+## combind into a single data.frame
+boysNames <- bind_rows(boysNames)
+
+## order names by frequency
+
+boysNames <- mutate(boysNames,
+                    Name = factor(Name, levels = unique(Name), labels = tolower(unique(Name))),
+                    Name = reorder(Name, Count)
+                    )
+
+## plot
+library(ggplot2)
+
+ggplot(boysNames, aes(x = Name, y = Count, color = factor(Year), fill = factor(Year))) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_text(size = 7, angle = 90),
+          legend.position = "top")
